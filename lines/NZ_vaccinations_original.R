@@ -1,7 +1,6 @@
 library(dplyr) # A Grammar of Data Manipulation
 library(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics
 library(readxl) # Read Excel Files
-library(ggtext) # Improved Text Rendering Support for 'ggplot2'
 
 vaccinations <- read_excel(
   path = fs::dir_ls(here::here("lines"), glob = "*.xlsx"),
