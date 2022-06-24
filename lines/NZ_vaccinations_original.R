@@ -3,19 +3,11 @@ library(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graph
 library(readxl) # Read Excel Files
 library(ggtext) # Improved Text Rendering Support for 'ggplot2'
 
-path <- here::here("line_chart")
-
-files <- fs::dir_ls(path, glob = "*.xlsx")
-
-data <- files |> 
-  purrr::map_dfr(~read_excel(
-    path = .x,
-    sheet = "Date",
-    .name_repair = janitor::make_clean_names,
-    range = cell_cols("A:C")
-  ))
-
-vaccinations <- data |> 
+vaccinations <- read_excel(
+  path = fs::dir_ls(here::here("lines"), glob = "*.xlsx"),
+  sheet = "Date",
+  range = cell_cols("A:C"),
+  .name_repair = janitor::make_clean_names) |> 
   tidyr::pivot_longer(2:3, names_to = "dose") |> 
   mutate(date = as.Date(date))
 
