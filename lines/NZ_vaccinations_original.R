@@ -11,24 +11,94 @@ vaccinations <- read_excel(
   tidyr::pivot_longer(2:3, names_to = "dose") |> 
   mutate(date = as.Date(date))
 
-ggplot(vaccinations, aes(x = date, y = value, colour = dose)) +
-  geom_smooth(se = FALSE, size = 1.5) +
+# ggplot(vaccinations, aes(x = date, y = value, colour = dose)) +
+#   geom_smooth(se = FALSE, size = 2) +
+#   scale_x_date(limits = range, breaks = "1 month", labels = scales::label_date("%B")) +
+#   scale_y_continuous(labels = scales::label_comma()) +
+#   scale_color_manual(labels = c("1st dose", "2nd dose"), values = c("blue", "red")) +
+#   labs(
+#     title = "Number of <span style='color:blue'><strong>first doses</strong></span> and number of <span style='color:red'><strong>second doses<strong></span> of the COVID-19 vaccine<br>administered by day in 2021",
+#     caption = "Data: NZ Ministry of Health"
+#   ) +
+#   theme_minimal() +
+#   theme(
+#     plot.title.position = "plot",
+#     title = element_text(size = 20),
+#     legend.position = "none",
+#     plot.title = element_markdown(lineheight = 1.1),
+#     plot.caption = element_text(size=10),
+#     axis.title = element_blank(),
+#     panel.grid.major.x = element_blank(),
+#     panel.grid.minor.x = element_blank(),
+#     panel.grid.minor.y = element_blank(),
+#     axis.text = element_text(size=12)
+#   )
+
+ggplot(vaccinations, aes(x = date, y = value)) +
+  geom_line(size = 1) +
   scale_x_date(limits = range, breaks = "1 month", labels = scales::label_date("%B")) +
   scale_y_continuous(labels = scales::label_comma()) +
   scale_color_manual(labels = c("1st dose", "2nd dose"), values = c("blue", "red")) +
   labs(
-    y = "Number of doses administered",
-    title = "Number of <span style='color:blue'><strong>first doses</strong></span> and number of <span style='color:red'><strong>second doses<strong></span> of the COVID-19 vaccine administered by day in 2021",
-    colour = "Vaccine dosages"
+    title = "In New Zealand, most COVID-19 vaccinations were administered during 2021,<br>and here's how many were administered by day",
+    caption = "Data: NZ Ministry of Health"
   ) +
   theme_minimal() +
   theme(
     plot.title.position = "plot",
-    title = element_text(size = 18),
+    title = element_text(size = 20),
     legend.position = "none",
     plot.title = element_markdown(lineheight = 1.1),
+    plot.caption = element_text(size=10),
     axis.title = element_blank(),
-    panel.grid = element_blank()
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    axis.text = element_text(size=12)
   )
 
-# daily average as well as 1st and 2nd doses
+ggplot(vaccinations |> filter(dose == "first_dose_administered"), aes(x = date, y = value)) +
+  geom_area(fill = "blue") +
+  scale_x_date(limits = range, breaks = "1 month", labels = scales::label_date("%B")) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  scale_color_manual(labels = c("1st dose", "2nd dose"), values = c("blue", "red")) +
+  labs(
+    title = "In the days after New Zealand entered lockdown, the number of <span style='color:blue'><strong>first doses</strong></span> spiked",
+    caption = "Data: NZ Ministry of Health"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title.position = "plot",
+    title = element_text(size = 20),
+    legend.position = "none",
+    plot.title = element_markdown(lineheight = 1.1),
+    plot.caption = element_text(size=10),
+    axis.title = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    axis.text = element_text(size=12)
+  )
+
+ggplot(vaccinations |> filter(dose == "second_dose_administered"), aes(x = date, y = value)) +
+  geom_area(fill = "red") +
+  scale_x_date(limits = range, breaks = "1 month", labels = scales::label_date("%B")) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  scale_color_manual(labels = c("1st dose", "2nd dose"), values = c("blue", "red")) +
+  labs(
+    title = "The number of <span style='color:red'><strong>second doses</strong></span> peaked during Super Saturday",
+    caption = "Data: NZ Ministry of Health"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title.position = "plot",
+    title = element_text(size = 20),
+    legend.position = "none",
+    plot.title = element_markdown(lineheight = 1.1),
+    plot.caption = element_text(size=10),
+    axis.title = element_blank(),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    axis.text = element_text(size=12)
+  )
